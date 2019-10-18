@@ -1,8 +1,9 @@
-import { number, shape, string } from 'prop-types'
+import { number, oneOfType, shape, string } from 'prop-types'
 
 const userShape = shape({
-  id: number.isRequired,
+  id: oneOfType([number, string]).isRequired,
   name: string,
+  avatar_url: string,
   email: string,
   skype: string,
   signature: string,

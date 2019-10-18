@@ -17,13 +17,14 @@ export const DESTROY_USER_FULFILLED = 'DESTROY_USER_FULFILLED'
 
 export const REMOVE_USER = 'REMOVE_USER'
 
+export const CREATE_TEMP_USER = 'CREATE_TEMP_USER'
 /**
  * Async actions. Making API requests
  */
 
-const loadMany = ({ page, limit }) => ({
+const loadMany = (params) => ({
   type: LOAD_USERS,
-  payload: api.users.loadMany({ page, limit })
+  payload: api.users.loadMany(params)
 })
 
 const create = form => ({
@@ -45,6 +46,10 @@ const destroy = user_id => ({
  * Sync actions. Updating store
  */
 
+const add = () => ({
+  type: CREATE_TEMP_USER,
+})
+
 const setMany = users => ({
   type: SET_USERS,
   payload: users,
@@ -65,7 +70,8 @@ export default {
   create,
   update,
   destroy,
-  set,
+  add,
   setMany,
+  set,
   remove,
 }

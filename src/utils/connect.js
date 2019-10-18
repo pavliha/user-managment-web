@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'src/redux'
+import { bindActionCreators } from 'redux'
 
 export default (redux) => (Component) => {
   let entries

@@ -5,10 +5,21 @@ import classNames from 'classnames'
 
 const styles = {
 
-  field: {
+  root: {
+    padding: 15,
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
+  field: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   toggle: {
+    cursor: 'pointer',
     color: 'rbga(0,0,0,0.5)'
   },
   enabled: {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { object } from 'prop-types'
-import { ListItemAvatar, ListItemText, withStyles } from '@material-ui/core'
+import { ListItemAvatar, ListItemText, ListItem, withStyles, Avatar } from '@material-ui/core'
 import { userShape } from 'shapes'
 
 const styles = {
@@ -8,10 +8,12 @@ const styles = {
 }
 
 const UserListItem = ({ classes, user }) =>
-  <div className={classes.root}>
-    <ListItemAvatar />
+  <ListItem button className={classes.root}>
+    <ListItemAvatar>
+      <Avatar alt={user.name} src={user.avatar_url} />
+    </ListItemAvatar>
     <ListItemText primary={user.name} />
-  </div>
+  </ListItem>
 
 UserListItem.propTypes = {
   classes: object.isRequired,

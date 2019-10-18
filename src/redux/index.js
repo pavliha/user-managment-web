@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'src/redux/index'
+import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import promise from 'redux-promise-middleware'
 import createSagaMiddleware from 'redux-saga'

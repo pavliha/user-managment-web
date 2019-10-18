@@ -1,9 +1,12 @@
 import Http from 'services/Http'
+import qs from 'querystring'
+import clean from 'clean-object'
 
 const users = {
 
-  loadMany(page, limit) {
-    return Http.get('/users', { page, limit })
+  loadMany({ page, limit, is_active, search }) {
+    const query = qs.stringify(clean({ page, limit, is_active, search }))
+    return Http.get(`/users?${query}`)
   },
 
   create(form) {
