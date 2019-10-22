@@ -1,7 +1,7 @@
 import all from './all'
-import search from './search'
+import filtered from './filtered'
 
 export default {
   all,
-  search,
+  filtered,
 }

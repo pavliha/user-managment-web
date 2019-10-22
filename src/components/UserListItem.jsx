@@ -2,6 +2,7 @@ import React from 'react'
 import { object } from 'prop-types'
 import { ListItemAvatar, ListItemText, ListItem, withStyles, Avatar } from '@material-ui/core'
 import { userShape } from 'shapes'
+import initials from 'name-initials'
 
 const styles = {
   root: {},
@@ -10,7 +11,9 @@ const styles = {
 const UserListItem = ({ classes, user }) =>
   <ListItem button className={classes.root}>
     <ListItemAvatar>
-      <Avatar alt={user.name} src={user.avatar_url} />
+      <Avatar alt={user.name} src={user.avatar_url}>
+        {initials(user.name)}
+      </Avatar>
     </ListItemAvatar>
     <ListItemText primary={user.name} />
   </ListItem>

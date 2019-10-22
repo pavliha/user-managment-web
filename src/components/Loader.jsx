@@ -1,23 +1,10 @@
 import React, { Component } from 'react'
-import { func, node, object, string, any } from 'prop-types'
+import { func, node, object, any } from 'prop-types'
 import { Typography, withStyles } from '@material-ui/core'
 import ErrorIcon from 'mdi-react/ErrorIcon'
 import isEqual from 'lodash/isEqual'
 
 const styles = theme => ({
-
-  root: {},
-
-  loading: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
 
   errorContainer: {
     display: 'flex',
@@ -36,8 +23,6 @@ const styles = theme => ({
 class Loader extends Component {
 
   state = {
-    isLoading: false,
-    isLoaded: false,
     error: null,
   }
 
@@ -54,11 +39,11 @@ class Loader extends Component {
   }
 
   load = async (params) => {
-    const { load, onError, onLoad } = this.props
+    const { load, onError, onLoad, onLoading } = this.props
     try {
-      this.setState({ error: null, isLoading: true })
+      onLoading(true)
       const result = await load(params)
-      this.setState({ isLoaded: true, isLoading: false })
+      onLoading(false)
       onLoad(result)
     } catch (error) {
       this.setState({ error })
@@ -67,8 +52,8 @@ class Loader extends Component {
   }
 
   render() {
-    const { classes, children, className } = this.props
-    const { isLoaded, isLoading, error } = this.state
+    const { classes, children } = this.props
+    const { error } = this.state
 
     if (error) {
       return (
@@ -82,39 +67,18 @@ class Loader extends Component {
       )
     }
 
-    if (isLoading) {
-      return (
-        <div className={className}>
-          {children}
-        </div>
-
-      )
-    }
-
-    if (isLoaded && className) {
-      return (
-        <div className={className}>
-          {children}
-        </div>
-      )
-    }
-
-    if (isLoaded) {
-      return children
-    }
-
-    return null
+    return children
   }
 }
 
 Loader.propTypes = {
   classes: object.isRequired,
-  className: string,
   params: any,
   load: func.isRequired,
   children: node,
-  onLoad: func.isRequired,
-  onError: func.isRequired,
+  onLoading: func,
+  onLoad: func,
+  onError: func,
 }
 
 Loader.defaultProps = {

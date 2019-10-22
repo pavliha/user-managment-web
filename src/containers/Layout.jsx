@@ -1,18 +1,21 @@
-import React, { Component } from 'react'
-import { object, func, shape, arrayOf } from 'prop-types'
+import React from 'react'
+import { bool, func, object, shape } from 'prop-types'
 import { withStyles } from '@material-ui/core'
-import { Switch, Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import ProfileScene from './@profile/ProfileScene'
-import { AddUserButton, UsersFilterForm, UsersList, Form, Loader } from 'components'
-import userShape from 'shapes/user'
-import { select, actions, connect } from 'src/redux'
+import { AddUserButton, Form, UsersFilterForm, UsersLoader } from 'components'
+import { actions, connect } from 'src/redux'
 
 const styles = {
   root: {
     flex: 1,
     display: 'flex',
+    height: '100%',
   },
-  users: {
+  sidebar: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
     boxSizing: 'border-box',
     width: 300,
     borderRight: '1px solid rgba(0,0,0,0.1)'
@@ -26,66 +29,49 @@ const styles = {
   addUserButton: {
     marginBottom: 15,
   },
-  usersList: {
-    marginTop: 15,
+  list: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'auto',
   }
 }
 
-class Layout extends Component {
-
-  state = {
-    search: '',
-    is_active: true,
-  }
-
-  searchUsers = ({ search, is_active }) => {
-    this.setState({ is_active, search: search || '' })
-  }
-
-  render() {
-    const { classes, redux: { users, addUser, loadUsers } } = this.props
-    const { is_active, search } = this.state
-
-    return (
-      <div className={classes.root}>
-        <Loader
-          load={loadUsers}
-          params={{ is_active, search }}
-          className={classes.users}
-        >
-          <div className={classes.filter}>
-            <AddUserButton className={classes.addUserButton} onClick={addUser} />
-            <Form
-              is_active={is_active}
-              search={search}
-              component={UsersFilterForm}
-              onSubmit={this.searchUsers}
-            />
-          </div>
-          <UsersList className={classes.usersList} users={users} />
-        </Loader>
-        <div className={classes.container}>
-          <Switch>
-            <Route path="/profile" component={ProfileScene} />
-          </Switch>
-        </div>
+const Layout = ({ classes, redux: { status, addUser, filterUsers } }) =>
+  <div className={classes.root}>
+    <div className={classes.sidebar}>
+      <div className={classes.filter}>
+        <AddUserButton className={classes.addUserButton} onClick={addUser} />
+        <Form
+          is_active={status.is_active}
+          search={status.search}
+          component={UsersFilterForm}
+          onSubmit={filterUsers}
+        />
       </div>
-    )
-  }
-}
+      <UsersLoader className={classes.list} />
+    </div>
+    <div className={classes.container}>
+      <Switch>
+        <Route path="/profile" component={ProfileScene} />
+      </Switch>
+    </div>
+  </div>
 
 Layout.propTypes = {
   classes: object.isRequired,
   redux: shape({
-    loadUsers: func.isRequired,
+    filterUsers: func.isRequired,
     addUser: func.isRequired,
-    users: arrayOf(userShape),
+    status: shape({
+      is_active: bool,
+    })
   })
 }
 
 const redux = state => ({
-  users: select.users.search(state),
-  loadUsers: actions.users.loadMany,
+  status: state.users.status,
+  filterUsers: actions.users.filter,
   addUser: actions.users.add,
 })
 export default withStyles(styles)(connect(redux)(Layout))

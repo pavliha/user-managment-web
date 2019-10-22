@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import entities from './entities'
-import search from './search'
+import status from './status'
 
 export default combineReducers({
-  search,
+  status,
   entities,
 })
