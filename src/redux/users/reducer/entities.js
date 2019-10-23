@@ -1,4 +1,4 @@
-import { CREATE_TEMP_USER, SET_USER, SET_USERS } from '../action'
+import { CREATE_TEMP_USER, REMOVE_USER, SET_USER, SET_USERS } from '../action'
 import { arrayToObject, fromJWT } from 'src/utils'
 import Storage from 'src/services/Storage'
 import moment from 'moment'
@@ -42,6 +42,12 @@ const usersReducer = (state = initialState, { type, payload }) => {
           created_at: moment().format('YYYY-MM-DD HH:mm:ss')
         }
       }
+    }
+
+    case REMOVE_USER: {
+      const users = { ...state }
+      delete users[payload]
+      return users
     }
 
     default:

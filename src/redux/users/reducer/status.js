@@ -22,7 +22,7 @@ const statusReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         total: payload.total,
-        limit: payload.perPage,
+        limit: Number(payload.perPage),
         visible: state.search ? results : [],
         is_filtering: false,
       }

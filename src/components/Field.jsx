@@ -28,6 +28,7 @@ class Field extends Component {
             onChange={this.handleChange(form)}
             error={(form.submitCount > 0) && !!form.errors[name]}
             helperText={(form.submitCount > 0) ? form.errors[name] : undefined}
+            onError={(error) => form.setErrors({ [name]: error })}
           />
         )
       }

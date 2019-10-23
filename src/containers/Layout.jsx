@@ -1,10 +1,11 @@
 import React from 'react'
 import { bool, func, object, shape } from 'prop-types'
-import { withStyles } from '@material-ui/core'
+import { Box, withStyles } from '@material-ui/core'
 import { Route, Switch } from 'react-router-dom'
 import ProfileScene from './@profile/ProfileScene'
-import { AddUserButton, Form, UsersFilterForm, UsersLoader } from 'components'
+import { AddUserButton, Form, UsersFilterForm, UsersLoader, Header } from 'components'
 import { actions, connect } from 'src/redux'
+import IndexScene from './IndexScene'
 
 const styles = {
   root: {
@@ -52,9 +53,14 @@ const Layout = ({ classes, redux: { status, addUser, filterUsers } }) =>
       <UsersLoader className={classes.list} />
     </div>
     <div className={classes.container}>
-      <Switch>
-        <Route path="/profile" component={ProfileScene} />
-      </Switch>
+      <Header />
+      <Box p={3}>
+        <Switch>
+          <Route exact path="/" component={IndexScene} />
+          <Route exact path="/profile" component={ProfileScene} />
+          <Route exact path="/profile/:user_id" component={ProfileScene} />
+        </Switch>
+      </Box>
     </div>
   </div>
 

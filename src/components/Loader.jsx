@@ -83,7 +83,8 @@ Loader.propTypes = {
 
 Loader.defaultProps = {
   onLoad: () => {},
-  onError: () => {}
+  onError: () => {},
+  onLoading: () => {},
 }
 
 export default withStyles(styles)(Loader)

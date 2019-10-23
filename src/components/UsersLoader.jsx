@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { object, func, shape, arrayOf, number, bool, string } from 'prop-types'
 import { withStyles } from '@material-ui/core'
 import { Loader, UsersList, Loading } from 'components'
@@ -22,7 +22,6 @@ const UsersLoader = ({ classes, className, redux }) => {
   const [isLoading, setLoading] = useState(true)
   const { users, loadUsers, status, paginateUsers } = redux
   const { page, limit, is_active, search } = status
-  const handleScrollBottom = useCallback(() => paginateUsers({ page: page + 1 }))
 
   return (
     <Loader
@@ -33,7 +32,7 @@ const UsersLoader = ({ classes, className, redux }) => {
       <UsersList
         className={classNames([classes.root, className])}
         users={users}
-        onScrollBottom={handleScrollBottom}
+        onScrollBottom={() => paginateUsers({ page: page + 1 })}
       />
       {isLoading && <Loading size={64} className={classes.loading} />}
     </Loader>

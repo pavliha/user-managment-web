@@ -4,13 +4,17 @@ import clean from 'clean-object'
 
 const users = {
 
+  load(id) {
+    return Http.get(`/users/${id}`)
+  },
+
   loadMany({ page, limit, is_active, search }) {
     const query = qs.stringify(clean({ page, limit, is_active, search }))
     return Http.get(`/users?${query}`)
   },
 
   create(form) {
-    return Http.put(`/users`, form)
+    return Http.post(`/users`, form)
   },
 
   update(user_id, form) {

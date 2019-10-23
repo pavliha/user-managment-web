@@ -7,7 +7,8 @@ import {
   LOAD_USERS_FULFILLED,
   UPDATE_USER_FULFILLED,
   DESTROY_USER_FULFILLED,
-} from 'src/redux/users/action'
+  LOAD_USER_FULFILLED,
+} from './action'
 
 const defineRelationsFrom = (models) => ([
   [models.users, actions.users.setMany],
@@ -19,7 +20,8 @@ function* setUsers({ payload: { data } }) {
   yield putRelationsToStore(models, relations)
 }
 
-function* setUser({ payload }) {
+function* setUser({ payload, meta }) {
+  if (meta?.token) yield put(actions.users.remove(meta.token))
   const models = normalize(payload, 'users')
   const relations = defineRelationsFrom(models)
   yield putRelationsToStore(models, relations)
@@ -32,6 +34,7 @@ function* removeUser({ mata: { user_id } }) {
 export default function* saga() {
   yield all([
     takeEvery(LOAD_USERS_FULFILLED, setUsers),
+    takeEvery(LOAD_USER_FULFILLED, setUser),
     takeEvery(CREATE_USER_FULFILLED, setUser),
     takeEvery(UPDATE_USER_FULFILLED, setUser),
     takeEvery(DESTROY_USER_FULFILLED, removeUser),

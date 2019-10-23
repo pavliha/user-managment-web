@@ -10,6 +10,7 @@ class Form extends Component {
     const { onSubmit } = this.props
 
     try {
+      setErrors({})
       setSubmitting(true)
       return await onSubmit(form)
     } catch (error) {

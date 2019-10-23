@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { func, object, shape } from 'prop-types'
 import { TextField, withStyles, InputAdornment } from '@material-ui/core'
 import { Form } from 'formik'
@@ -23,7 +23,7 @@ const UsersFilterForm = ({ classes, formik: { submitForm } }) =>
       InputProps={{
         startAdornment: <InputAdornment position="start"><SearchIcon className={classes.searchIcon} /></InputAdornment>
       }}
-      onChange={debounce(submitForm, 500)}
+      onChange={useCallback(debounce(submitForm, 500), [])}
     />
     <Field
       name="is_active"

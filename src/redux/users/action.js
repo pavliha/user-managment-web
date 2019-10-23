@@ -1,5 +1,8 @@
 import api from 'src/api'
 
+export const LOAD_USER = 'LOAD_USER'
+export const LOAD_USER_FULFILLED = 'LOAD_USER_FULFILLED'
+
 export const LOAD_USERS = 'LOAD_USERS'
 export const LOAD_USERS_FULFILLED = 'LOAD_USERS_FULFILLED'
 
@@ -24,15 +27,21 @@ export const CREATE_TEMP_USER = 'CREATE_TEMP_USER'
  * Async actions. Making API requests
  */
 
+const load = (user_id) => ({
+  type: LOAD_USER,
+  payload: api.users.load(user_id)
+})
+
 const loadMany = (params) => ({
   type: LOAD_USERS,
   payload: api.users.loadMany(params),
   meta: params,
 })
 
-const create = form => ({
+const create = ({ token, ...form }) => ({
   type: CREATE_USER,
-  payload: api.users.create(form)
+  payload: api.users.create(form),
+  meta: { token }
 })
 
 const update = (user_id, form) => ({
@@ -83,6 +92,7 @@ const clear = () => ({
 })
 
 export default {
+  load,
   loadMany,
   create,
   update,
