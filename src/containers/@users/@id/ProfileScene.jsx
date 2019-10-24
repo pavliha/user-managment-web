@@ -13,7 +13,6 @@ const styles = {
 class ProfileScene extends Component {
 
   save = async (callback, form, formikBag) => {
-    formikBag.setStatus({ success_message: 'Saving changes!' })
     const action = await callback(form)
     formikBag.setStatus({ success_message: 'Changes saved!' })
     setTimeout(() => formikBag.setStatus({ success_message: null }), 3000)

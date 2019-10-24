@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core'
 import { Form, RolesForm, UserLoader } from 'components'
 import { actions, connect } from 'src/redux'
 import userShape from 'shapes/user'
-import isNumber from 'lodash/isNumber'
 
 const styles = {
   root: {},
@@ -12,9 +11,12 @@ const styles = {
 
 class RolesScene extends Component {
 
-  submit = async form => {
+  submit = async (form, formikBag) => {
     const { user, updateUser } = this.props.redux
-    if (isNumber(user.id)) return updateUser(user.id, form)
+    const action = await updateUser(user.id, form)
+    formikBag.setStatus({ success_message: 'Changes saved!' })
+    setTimeout(() => formikBag.setStatus({ success_message: null }), 3000)
+    return action
   }
 
   render() {

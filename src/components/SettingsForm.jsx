@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { func, object, shape } from 'prop-types'
-import { Box, withStyles } from '@material-ui/core'
+import { Box, Typography, withStyles } from '@material-ui/core'
 import { Form } from 'formik'
 import { Field, AvatarField, ServerMessage, SwitchField } from 'components'
 import * as Yup from 'yup'
@@ -9,7 +9,6 @@ import debounce from 'lodash/debounce'
 const styles = {
   root: {
     display: 'flex',
-    alignItems: 'center',
   },
 
   info: {
@@ -20,26 +19,42 @@ const styles = {
 }
 
 const SettingsForm = ({ classes, formik: { submitForm } }) => {
-  const submit = useCallback(debounce(submitForm, 3000), [])
+  const [isSaving, setSaving] = useState(false)
+
+  const handleChange = useCallback(() => {
+    const submit = debounce(() => {
+      submitForm()
+      setSaving(false)
+    }, 3000)
+    setSaving(true)
+    return submit()
+  }, [submitForm])
 
   return (
     <Form className={classes.root}>
-      <Field
-        name="avatar_url"
-        component={AvatarField}
-        onChange={submit}
-      />
-      <Box p={2} className={classes.info}>
+      <div>
+        <Field
+          name="avatar_url"
+          component={AvatarField}
+          onChange={handleChange}
+        />
+        <Box pt={2}>
+          {!status?.success_message && (
+            !isSaving
+              ? <Typography variant="caption" color="textSecondary">Waiting for changes...</Typography>
+              : <Typography variant="caption" color="textSecondary">Saving new data...</Typography>
+          )}
+          <ServerMessage color="error" name="non_field_error" />
+          <ServerMessage variant="caption" color="textSecondary" name="success_message" />
+        </Box>
+      </div>
+      <Box pl={2} className={classes.info}>
         <Field
           name="is_active"
           label="Disable"
           component={SwitchField}
-          onChange={submit}
+          onChange={handleChange}
         />
-        <Box pt={5}>
-          <ServerMessage color="error" name="non_field_error" />
-          <ServerMessage color="primary" name="success_message" />
-        </Box>
       </Box>
     </Form>
   )

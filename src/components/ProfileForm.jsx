@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { bool, func, object, shape } from 'prop-types'
 import { Box, TextField, Typography, withStyles } from '@material-ui/core'
 import { Form } from 'formik'
@@ -9,7 +9,6 @@ import debounce from 'lodash/debounce'
 const styles = {
   root: {
     display: 'flex',
-    alignItems: 'center',
   },
   info: {
     maxWidth: 500,
@@ -19,50 +18,65 @@ const styles = {
 }
 
 const ProfileForm = ({ classes, formik: { submitForm, status } }) => {
-  const submit = useCallback(debounce(submitForm, 3000), [])
+  const [isSaving, setSaving] = useState(false)
+
+  const handleChange = useCallback(() => {
+    const submit = debounce(() => {
+      submitForm()
+      setSaving(false)
+    }, 3000)
+    setSaving(true)
+    return submit()
+  }, [submitForm])
 
   return (
     <Form className={classes.root}>
-      <Field
-        name="avatar_url"
-        component={AvatarField}
-        onChange={submit}
-      />
-      <Box p={2} className={classes.info}>
+      <div>
+        <Field
+          name="avatar_url"
+          component={AvatarField}
+          onChange={handleChange}
+        />
+        <Box pt={2}>
+          {!status?.success_message && (
+            !isSaving
+              ? <Typography variant="caption" color="textSecondary">Waiting for changes...</Typography>
+              : <Typography variant="caption" color="textSecondary">Saving new data...</Typography>
+          )}
+          <ServerMessage color="error" name="non_field_error" />
+          <ServerMessage variant="caption" color="textSecondary" name="success_message" />
+        </Box>
+      </div>
+
+      <Box pl={2} className={classes.info}>
         <Field
           name="name"
           margin="normal"
           label="Name"
           component={TextField}
-          onChange={submit}
+          onChange={handleChange}
         />
         <Field
           name="email"
           label="Email"
           margin="normal"
           component={TextField}
-          onChange={submit}
+          onChange={handleChange}
         />
         <Field
           name="skype"
           label="Skype"
           margin="normal"
           component={TextField}
-          onChange={submit}
+          onChange={handleChange}
         />
         <Field
           name="signature"
           label="Signature"
           margin="normal"
           component={TextField}
-          onChange={submit}
+          onChange={handleChange}
         />
-        <Box pt={5}>
-          {!status?.success_message &&
-          <Typography variant="caption" color="textSecondary">Waiting for changes...</Typography>}
-          <ServerMessage color="error" name="non_field_error" />
-          <ServerMessage color="primary" name="success_message" />
-        </Box>
       </Box>
     </Form>
   )
