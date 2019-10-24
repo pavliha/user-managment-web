@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { object, string, func } from 'prop-types'
 import api from 'api'
-import { withStyles } from '@material-ui/core'
+import { Paper, withStyles } from '@material-ui/core'
 import transformValidationApi from 'utils/transformValidationApi'
 import { ServerMessage } from 'components'
 
@@ -29,6 +29,7 @@ const styles = {
     backgroundSize: 'cover',
     height: 300,
     width: 300,
+    borderRadius: 5,
   }
 }
 
@@ -76,9 +77,9 @@ class AvatarField extends Component {
 
     return (
       <div className={classes.root} onClick={this.clickFileInput}>
-        <div className={classes.container}>
+        <Paper elevation={1} className={classes.container}>
           {avatar_url && <div style={{ backgroundImage: `url('${avatar_url}')` }} className={classes.img} />}
-        </div>
+        </Paper>
         <ServerMessage color="error" name={name} />
         <input
           ref={this.fileInput}

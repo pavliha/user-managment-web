@@ -1,5 +1,5 @@
 import React from 'react'
-import { object } from 'prop-types'
+import { number, object, oneOfType, string } from 'prop-types'
 import { withStyles, AppBar, Tab, Tabs } from '@material-ui/core'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -7,34 +7,37 @@ const styles = {
   root: {},
 }
 
-const links = [
+const links = id => [
   {
-    to: '/profile',
+    to: `/users/${id}/profile`,
     label: 'Profile'
   },
   {
-    to: '/roles',
-    label: 'User Roles'
+    to: `/users/${id}/roles`,
+    label: 'User Roles',
+    disabled: id.includes('temp'),
   },
   {
-    to: '/settings',
-    label: 'Settings'
+    to: `/users/${id}/settings`,
+    label: 'Settings',
+    disabled: id.includes('temp'),
   }
 ]
 
-const Header = ({ classes }) => {
-  const { push, location: { pathname } } = useHistory()
-  const navigate = (e, value) => push(value)
-  const link = links.find(link => link.to === pathname)
+const Header = ({ classes, user_id }) => {
+  const history = useHistory()
+  const navigate = (e, value) => history.push(value)
+  const link = links(user_id).find(link => link.to === history.location.pathname)
 
   return (
     <AppBar className={classes.root} position="static">
       <Tabs value={link?.to || false} onChange={navigate}>
-        {links.map(link =>
+        {links(user_id).map(link =>
           <Tab
             key={link.to}
             component={Link}
             to={link.to}
+            disabled={link.disabled}
             label={link.label}
             value={link.to}
           />
@@ -46,6 +49,7 @@ const Header = ({ classes }) => {
 
 Header.propTypes = {
   classes: object.isRequired,
+  user_id: oneOfType([number, string]),
 }
 
 export default withStyles(styles)(Header)

@@ -1,11 +1,11 @@
 import React from 'react'
 import { bool, func, object, shape } from 'prop-types'
-import { Box, withStyles } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 import { Route, Switch } from 'react-router-dom'
-import ProfileScene from './@profile/ProfileScene'
-import { AddUserButton, Form, UsersFilterForm, UsersLoader, Header } from 'components'
+import { AddUserButton, Form, UsersFilterForm, UsersLoader } from 'components'
 import { actions, connect } from 'src/redux'
 import IndexScene from './IndexScene'
+import UsersLayout from './@users/UsersLayout'
 
 const styles = {
   root: {
@@ -20,9 +20,6 @@ const styles = {
     boxSizing: 'border-box',
     width: 300,
     borderRight: '1px solid rgba(0,0,0,0.1)'
-  },
-  container: {
-    flex: 1,
   },
   filter: {
     padding: '15px',
@@ -52,16 +49,10 @@ const Layout = ({ classes, redux: { status, addUser, filterUsers } }) =>
       </div>
       <UsersLoader className={classes.list} />
     </div>
-    <div className={classes.container}>
-      <Header />
-      <Box p={3}>
-        <Switch>
-          <Route exact path="/" component={IndexScene} />
-          <Route exact path="/profile" component={ProfileScene} />
-          <Route exact path="/profile/:user_id" component={ProfileScene} />
-        </Switch>
-      </Box>
-    </div>
+    <Switch>
+      <Route exact path="/" component={IndexScene} />
+      <Route path="/users/:id" component={UsersLayout} />
+    </Switch>
   </div>
 
 Layout.propTypes = {

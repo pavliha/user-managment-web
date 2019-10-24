@@ -12,7 +12,7 @@ const styles = {
 const UserListItem = ({ classes, user }) =>
   <ListItem
     component={Link}
-    to={`/profile/${user.id}`}
+    to={`/users/${user.id}/profile`}
     button
     className={classes.root}
   >
