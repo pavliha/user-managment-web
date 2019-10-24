@@ -3,7 +3,7 @@ import { FILTER_USERS, LOAD_USERS_FULFILLED, PAGINATE_USERS } from '../action'
 const initialState = {
   page: 1,
   lastPage: 1,
-  limit: 20,
+  limit: 40,
   search: '',
   is_active: true,
   total: null,
