@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { func, object, shape } from 'prop-types'
-import { Box, TextField, withStyles } from '@material-ui/core'
+import { bool, func, object, shape } from 'prop-types'
+import { Box, TextField, Typography, withStyles } from '@material-ui/core'
 import { Form } from 'formik'
 import { Field, AvatarField, ServerMessage } from 'components'
 import * as Yup from 'yup'
@@ -18,7 +18,7 @@ const styles = {
 
 }
 
-const ProfileForm = ({ classes, formik: { submitForm } }) => {
+const ProfileForm = ({ classes, formik: { submitForm, status } }) => {
   const submit = useCallback(debounce(submitForm, 3000), [])
 
   return (
@@ -58,6 +58,8 @@ const ProfileForm = ({ classes, formik: { submitForm } }) => {
           onChange={submit}
         />
         <Box pt={5}>
+          {!status?.success_message &&
+          <Typography variant="caption" color="textSecondary">Waiting for changes...</Typography>}
           <ServerMessage color="error" name="non_field_error" />
           <ServerMessage color="primary" name="success_message" />
         </Box>
@@ -70,6 +72,7 @@ ProfileForm.propTypes = {
   classes: object.isRequired,
   formik: shape({
     submitForm: func,
+    isSubmitting: bool,
   })
 }
 

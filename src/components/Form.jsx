@@ -12,7 +12,7 @@ class Form extends Component {
     try {
       setErrors({})
       setSubmitting(true)
-      return await onSubmit(form)
+      return await onSubmit(form, formikBag)
     } catch (error) {
       setErrors(transformValidationApi(error))
     } finally {

@@ -12,13 +12,34 @@ const styles = {
 
 class ProfileScene extends Component {
 
-  submit = async (form, formikBag) => {
-    const { history, redux: { user, createUser, updateUser } } = this.props
-    if (isNumber(user.id)) return updateUser(user.id, form)
+  save = async (callback, form, formikBag) => {
+    formikBag.setStatus({ success_message: 'Saving changes!' })
+    const action = await callback(form)
+    formikBag.setStatus({ success_message: 'Changes saved!' })
+    setTimeout(() => formikBag.setStatus({ success_message: null }), 3000)
+    return action
+  }
+
+  create = async form => {
+    const { history, redux: { user, createUser } } = this.props
     const action = await createUser({ ...form, token: user.token })
     history.push(`/users/${action.value.id}/profile`)
-    formikBag.setStatus({ success_message: 'Changes saved!' })
     return action
+  }
+
+  update = form => {
+    const { redux: { user, updateUser } } = this.props
+    return updateUser(user.id, form)
+  }
+
+  submit = async (form, formikBag) => {
+    const { redux: { user } } = this.props
+    const isUserExist = isNumber(user.id)
+
+    return isUserExist
+      ? this.save(this.update, form, formikBag)
+      : this.save(this.create, form, formikBag)
+
   }
 
   render() {
