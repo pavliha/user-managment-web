@@ -29,4 +29,4 @@ yarn start
 ```
 
 ## How everything works
-![Diagram](https://i.ibb.co/QK63Wp0/react-app-flow.png)
+![Diagram](/diagram.png)
