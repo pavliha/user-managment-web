@@ -2,15 +2,16 @@ const transformValidationApi = errors => {
   console.error(errors)
 
   if (errors?.error?.status === 500) {
-    console.error(errors)
     return { non_field_error: 'Внутренння ошибка сервера!' }
   }
+
   if (errors?.error?.message) {
-    console.error(errors)
     return { non_field_error: 'Неизвестная ошибка!' }
   }
 
-  if (errors?.message) return { non_field_error: errors.message }
+  if (errors?.message) {
+    return { non_field_error: errors.message }
+  }
 
   const isNetworkError = errors?.message === 'Network Error'
   const isNotFoundError = errors?.response?.status === 404

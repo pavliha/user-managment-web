@@ -2,7 +2,8 @@ import { FILTER_USERS, LOAD_USERS_FULFILLED, PAGINATE_USERS } from '../action'
 
 const initialState = {
   page: 1,
-  limit: 40,
+  lastPage: 1,
+  limit: 20,
   search: '',
   is_active: true,
   total: null,
@@ -44,6 +45,7 @@ const statusReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         page: shouldPaginate ? payload.page : state.page,
+        lastPage: payload.page > state.page ? payload.page : state.page,
         limit: shouldPaginate ? payload.limit : state.limit,
       }
     }

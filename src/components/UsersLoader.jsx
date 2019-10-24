@@ -21,7 +21,7 @@ const styles = {
 const UsersLoader = ({ classes, className, redux }) => {
   const [isLoading, setLoading] = useState(true)
   const { users, loadUsers, status, paginateUsers } = redux
-  const { page, limit, is_active, search } = status
+  const { page, limit, is_active, search, lastPage } = status
 
   return (
     <Loader
@@ -32,7 +32,7 @@ const UsersLoader = ({ classes, className, redux }) => {
       <UsersList
         className={classNames([classes.root, className])}
         users={users}
-        onScrollBottom={() => paginateUsers({ page: page + 1 })}
+        onScrollBottom={() => paginateUsers({ page: lastPage + 1 })}
       />
       {isLoading && <Loading size={64} className={classes.loading} />}
     </Loader>
