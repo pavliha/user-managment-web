@@ -1,6 +1,6 @@
 # User Managment React.js Application
 
-This app displays list of users and and edit them
+This app displays list of users and can edit them
 
 1. React.js
 2. Redux
